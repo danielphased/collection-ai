@@ -1,0 +1,11 @@
+{
+  "name": "collection-ai",
+  "version": "1.0.0",
+  "description": "Daniel's Claude Code collection: 18 subagents (engineering, QA, security, DevOps, project management) and 3 skills (verify, Kotlin, iOS App Store release).",
+  "author": { "name": "danielphased", "url": "https://github.com/danielphased" },
+  "homepage": "https://github.com/danielphased/collection-ai",
+  "repository": "https://github.com/danielphased/collection-ai",
+  "license": "MIT",
+  "keywords": ["agents", "skills", "subagents", "claude-code"],
+  "skills": "./skills"
+}

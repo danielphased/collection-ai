@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "collection-ai",
+  "description": "Subagents and skills for Claude Code by danielphased.",
+  "owner": { "name": "danielphased", "url": "https://github.com/danielphased" },
+  "plugins": [
+    {
+      "name": "collection-ai",
+      "version": "1.0.0",
+      "source": "./",
+      "description": "18 subagents and 3 skills: engineering roles, QA, security, DevOps, project management, verify, Kotlin, iOS App Store release.",
+      "homepage": "https://github.com/danielphased/collection-ai",
+      "license": "MIT",
+      "keywords": ["agents", "skills", "subagents"]
+    }
+  ]
+}

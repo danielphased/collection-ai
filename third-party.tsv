@@ -1,0 +1,29 @@
+# Third-party items that install.sh can fetch from their original sources (nothing here is copied into this repo).
+# Columns, separated by TABs: type  name  repo  ref  path  license
+#   skill : ref = pinned commit SHA, path = skill folder inside that repo
+#   plugin: ref = marketplace name (installed with `claude plugin`), path = -
+# To update a skill, change its SHA after reading the upstream diff.
+skill	agent-harness-construction	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/agent-harness-construction	MIT
+skill	api-design	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/api-design	MIT
+skill	backend-patterns	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/backend-patterns	MIT
+skill	benchmark	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/benchmark	MIT
+skill	blueprint	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/blueprint	MIT
+skill	browser-qa	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/browser-qa	MIT
+skill	config-gc	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/config-gc	MIT
+skill	e2e-testing	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/e2e-testing	MIT
+skill	frontend-a11y	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/frontend-a11y	MIT
+skill	jira-integration	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/jira-integration	MIT
+skill	nestjs-patterns	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/nestjs-patterns	MIT
+skill	react-patterns	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/react-patterns	MIT
+skill	react-performance	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/react-performance	MIT
+skill	react-testing	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/react-testing	MIT
+skill	security-review	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/security-review	MIT
+skill	team-agent-orchestration	affaan-m/ECC	d2ef2680594f9a17526a6e1a2e18b3d242c5d17b	skills/team-agent-orchestration	MIT
+skill	pr-review-expert	alirezarezvani/claude-skills	4a3c05b69e64f4925f7fc65c88890f614f79caf0	engineering/skills/pr-review-expert	MIT
+skill	skill-security-auditor	alirezarezvani/claude-skills	4a3c05b69e64f4925f7fc65c88890f614f79caf0	engineering/skills/skill-security-auditor	MIT
+skill	security-pen-testing	alirezarezvani/claude-skills	4a3c05b69e64f4925f7fc65c88890f614f79caf0	engineering-team/skills/security-pen-testing	MIT
+skill	senior-frontend	alirezarezvani/claude-skills	4a3c05b69e64f4925f7fc65c88890f614f79caf0	engineering-team/skills/senior-frontend	MIT
+skill	ui-ux-pro-max	nextlevelbuilder/ui-ux-pro-max-skill	6ae86f61f520d6ca229d2f40e070410638c908c5	.claude/skills/ui-ux-pro-max	MIT
+plugin	agent-skills	addyosmani/agent-skills	addy-agent-skills	-	MIT
+plugin	andrej-karpathy-skills	multica-ai/andrej-karpathy-skills	karpathy-skills	-	not stated
+plugin	claude-code-setup	anthropics/claude-plugins-official	claude-plugins-official	-	see repo
