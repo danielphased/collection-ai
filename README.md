@@ -1,6 +1,6 @@
 # collection-ai
 
-A growing collection of AI building blocks for [Claude Code](https://claude.com/claude-code): **18 subagents** and **3 skills** (more kinds of tools, such as webhooks, may follow).
+A growing collection of AI building blocks for [Claude Code](https://claude.com/claude-code): **18 subagents**, **3 skills**, **10 engineering standards**, a secrets-protection hook and an MCP server entry.
 
 Everything is plain Markdown plus a few small helper scripts, so you can read it, copy it and change it.
 
@@ -15,7 +15,7 @@ Pick one way.
 /plugin install collection-ai --marketplace danielphased/collection-ai
 ```
 
-**2. With the install script** (copies the files into `~/.claude`, no plugin needed):
+**2. With the install script** (copies the files into `~/.claude`, no plugin needed; also installs the engineering standards):
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/danielphased/collection-ai/main/install.sh | bash
@@ -34,7 +34,11 @@ Then start a new Claude Code session. Check subagents with `/agents`; skills loa
 | `./install.sh --list` | List everything available |
 | `./install.sh --third-party` | Other people's skills and plugins (see [below](#third-party-skills-and-plugins)) |
 | `./install.sh --all` | This repo's items **and** the third-party ones |
-| `./install.sh --agents` / `--skills` / `--plugins` | Only that kind (combine to pick several) |
+| `./install.sh --agents` / `--skills` / `--engineering` / `--plugins` | Only that kind (combine to pick several) |
+| `./install.sh --hooks` | Opt-in: the secrets-protection hook (edits `settings.json` after a backup) |
+| `./install.sh --mcp` | Opt-in: MCP servers from `mcp.json` |
+| `./install.sh --status` | Compare the repo with what is installed |
+| `./install.sh --capture` | From a clone: copy installed copies that differ back into the repo (for your own fork) |
 | `./install.sh --only verify,api-design` | Only the names you give (works for third-party too) |
 | `./install.sh --project` | Install into `./.claude` (this project only) instead of `~/.claude` |
 | `./install.sh --force` | Overwrite items you already have (default: skip them) |
@@ -45,7 +49,7 @@ With no clone, add options after `bash -s --`: `curl -fsSL .../install.sh | bash
 
 ## Contents
 
-- [Subagents](#subagents) · [Skills](#skills) · [How to use them](#how-to-use-them) · [Repository layout](#repository-layout) · [Third-party](#third-party-skills-and-plugins) · [Safety](#safety-and-privacy) · [Contributing](#contributing) · [Licence](#licence)
+- [Subagents](#subagents) · [Skills](#skills) · [Engineering standards](#engineering-standards) · [Hooks and MCP](#hooks-and-mcp-opt-in) · [How to use them](#how-to-use-them) · [Repository layout](#repository-layout) · [Third-party](#third-party-skills-and-plugins) · [Safety](#safety-and-privacy) · [Contributing](#contributing) · [Licence](#licence)
 
 ## Subagents
 
@@ -91,6 +95,39 @@ Notes:
 - `verify` runs a project's own checks (lint, type check, tests, build) before work is called done.
 - `ios-app-store-release` is a pre-upload checklist for TestFlight / App Store; `kotlin-engineering` covers Kotlin standards for production Android.
 
+## Engineering standards
+
+Ten documents that set how AI engineering agents work together: authority, lifecycle, quality gates, coding, testing,
+security, git and documentation rules. They are project-independent. The installer copies them to
+`~/.claude/engineering/`; point an agent or a project `CLAUDE.md` at the ones you want followed.
+
+| Standard | What it sets | Lines |
+|---|---|---|
+| [`ARCHITECTURE_PRINCIPLES`](engineering/ARCHITECTURE_PRINCIPLES.md) | Defines the architectural principles governing every software project regardless of language, framework, or technology stack. | 517 |
+| [`CODING_STANDARDS`](engineering/CODING_STANDARDS.md) | Universal coding standards for all engineering agents regardless of language, framework, or project. | 526 |
+| [`COMMUNICATION_PROTOCOL`](engineering/COMMUNICATION_PROTOCOL.md) | Defines how AI engineering agents communicate, collaborate, and hand off work. | 470 |
+| [`DEFINITION_OF_DONE`](engineering/DEFINITION_OF_DONE.md) | Defines the minimum quality standard required before any engineering task is considered complete. | 314 |
+| [`DOCUMENTATION_STANDARDS`](engineering/DOCUMENTATION_STANDARDS.md) | Universal documentation standards for all AI engineering agents. | 117 |
+| [`ENGINEERING_ORGANIZATION`](engineering/ENGINEERING_ORGANIZATION.md) | Shared constitution for every AI engineering agent. | 525 |
+| [`ENGINEERING_PRINCIPLES`](engineering/ENGINEERING_PRINCIPLES.md) | Universal engineering principles that govern every AI engineering agent. | 358 |
+| [`GIT_WORKFLOW`](engineering/GIT_WORKFLOW.md) | Universal Git workflow standards for AI engineering agents. | 184 |
+| [`SECURITY_STANDARDS`](engineering/SECURITY_STANDARDS.md) | Universal security standards for every engineering agent, regardless of language, framework, or project. | 482 |
+| [`TESTING_STANDARDS`](engineering/TESTING_STANDARDS.md) | Universal testing standards for all AI engineering agents. | 242 |
+
+## Hooks and MCP (opt-in)
+
+These change your Claude Code configuration, so the installer only touches them when asked.
+
+- **`./install.sh --hooks`** installs [`hooks/protect-secrets.sh`](hooks/protect-secrets.sh) and merges
+  [`hooks.json`](hooks.json) into `settings.json` (a dated backup is written first; your own hooks are kept, and running
+  it twice adds nothing). The hook blocks Claude's Edit/Write tools on files that usually hold secrets: `.env*` (not
+  `.env.example`), keys and certificates, SSH keys, credential files and stores. It does not cover shell commands that
+  write files. Override for one session: `CLAUDE_ALLOW_SECRET_EDIT=1 claude`.
+- **`./install.sh --mcp`** adds the servers in [`mcp.json`](mcp.json) at user scope through the `claude` CLI. Currently
+  `context7` (pinned `@upstash/context7-mcp@4.1.1`, needs `npx`): current library documentation. Library names and your
+  questions are sent to Upstash's service; no code is sent.
+- Remove either with the same flag plus `--uninstall`.
+
 ## How to use them
 
 - **A subagent:** ask for it by name ("use the `security-engineer` agent to review this change") or let Claude pick one from the descriptions.
@@ -103,6 +140,9 @@ Notes:
 collection-ai/
 ├── agents/                 18 subagent definitions, one .md file each
 ├── skills/                 3 skills, one folder each (entry point: SKILL.md)
+├── engineering/            10 engineering standards
+├── hooks/ + hooks.json     secrets-protection hook (opt-in)
+├── mcp.json                MCP servers (opt-in)
 ├── install.sh              the installer described above
 ├── third-party.tsv         third-party skills and plugins, pinned to exact commits
 ├── .claude-plugin/         plugin and marketplace manifests (for /plugin install)
@@ -157,7 +197,7 @@ Anthropic's built-in document skills (PDF, Word, Excel, PowerPoint and similar) 
 
 ## Safety and privacy
 
-- Agents and skills are instructions that Claude follows with your permissions. **Read a file before you install it**, and treat anything from this or any other public repo as untrusted until you have. The same goes for `install.sh`: it only copies files into the `agents/` and `skills/` folders, and skips anything that already exists unless you pass `--force`.
+- Agents and skills are instructions that Claude follows with your permissions. **Read a file before you install it**, and treat anything from this or any other public repo as untrusted until you have. The same goes for `install.sh`: by default it only copies files into the `agents/`, `skills/` and `engineering/` folders, and skips anything that already exists unless you pass `--force`. It edits `settings.json` only with `--hooks` and adds MCP servers only with `--mcp`.
 - Nothing in this repo contains credentials, hostnames or customer data; the agents and skills tell Claude never to print or commit secrets. If you find something that looks sensitive, please open an issue.
 - Third-party items run with the same permissions as your own. Review what `--dry-run` lists, and remember that a pinned commit is a fixed version, not a security guarantee: read what you install.
 
