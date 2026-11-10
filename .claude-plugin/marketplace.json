@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "collection-ai",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "source": "./",
-      "description": "18 subagents and 3 skills: engineering roles, QA, security, DevOps, project management, verify, Kotlin, iOS App Store release.",
+      "description": "22 subagents and 11 skills: engineering roles, QA, security, DevOps, project management, SEO, growth marketing, UI design, model routing, status briefing, cross-model review, skill vetting, compliance check, verify, Kotlin, iOS App Store release.",
       "homepage": "https://github.com/danielphased/collection-ai",
       "license": "MIT",
-      "keywords": ["agents", "skills", "subagents"]
+      "keywords": ["agents", "skills", "subagents", "seo", "design", "marketing"]
     }
   ]
 }

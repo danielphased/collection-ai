@@ -1,6 +1,6 @@
 # collection-ai
 
-A growing collection of AI building blocks for [Claude Code](https://claude.com/claude-code): **18 subagents**, **3 skills**, **10 engineering standards**, a secrets-protection hook and an MCP server entry.
+A growing collection of AI building blocks for [Claude Code](https://claude.com/claude-code): **22 subagents**, **11 skills**, **10 engineering standards**, a secrets-protection hook and an MCP server entry.
 
 Everything is plain Markdown plus a few small helper scripts, so you can read it, copy it and change it.
 
@@ -60,11 +60,13 @@ A subagent is a specialist role that Claude Code can hand a task to. Each one ha
 | [`ai-tech-lead`](agents/ai-tech-lead.md) | opus | all | Principal AI Technical Lead responsible for engineering leadership, technical mentorship, architectural consistency, cross-team coordination, and long-term technical… |
 | [`backend-engineer`](agents/backend-engineer.md) | opus | all | Senior Backend Engineer responsible for implementing backend features while preserving architecture, quality, security, and maintainability. |
 | [`code-reviewer`](agents/code-reviewer.md) | inherit | 6 tools | Use this agent when you need to conduct comprehensive code reviews focusing on code quality, security vulnerabilities, and best practices. |
+| [`codebase-scout`](agents/codebase-scout.md) | haiku | 3 tools | Use this agent for cheap, read-only lookups in the codebase: finding files, symbols, usages, config values and where something is defined or called. Use proactively… |
 | [`compliance-auditor`](agents/compliance-auditor.md) | inherit | 12 tools | Use this agent when you need to achieve regulatory compliance, implement compliance controls, or prepare for audits across frameworks like GDPR, HIPAA, PCI DSS, SOC 2,… |
 | [`database-engineer`](agents/database-engineer.md) | opus | all | Senior Database Engineer responsible for schema design, migrations, performance, data integrity, and database architecture. |
 | [`devops-engineer`](agents/devops-engineer.md) | opus | all | Senior DevOps Engineer responsible for infrastructure, CI/CD, deployment automation, observability, reliability, and platform engineering. |
 | [`documentation-engineer`](agents/documentation-engineer.md) | opus | all | Senior Documentation Engineer responsible for keeping technical documentation synchronized with the codebase and preserving engineering knowledge. |
 | [`frontend-engineer`](agents/frontend-engineer.md) | opus | all | Senior Frontend Engineer responsible for building accessible, performant, production-quality user interfaces while preserving architecture and user experience. |
+| [`growth-marketer`](agents/growth-marketer.md) | sonnet | all | Senior Growth Marketer responsible for low-budget customer acquisition — idea and offer validation, lead magnets, short-video and social content systems, and outreach… |
 | [`incident-response-engineer`](agents/incident-response-engineer.md) | opus | all | Senior Incident Response Engineer responsible for production incidents, root cause analysis, operational resilience, and continuous reliability improvements. |
 | [`integration-engineer`](agents/integration-engineer.md) | opus | all | Senior Integration Engineer responsible for designing, implementing, and validating integrations between internal systems and third-party services. |
 | [`mobile-app-developer`](agents/mobile-app-developer.md) | sonnet | 6 tools | Use this agent when developing iOS and Android mobile applications with focus on native or cross-platform implementation, performance optimization, and platform-specific… |
@@ -74,12 +76,15 @@ A subagent is a specialist role that Claude Code can hand a task to. Each one ha
 | [`release-engineer`](agents/release-engineer.md) | opus | all | Senior Release Engineer responsible for coordinating releases, validating deployment readiness, managing versioning, and ensuring safe, repeatable software releases. |
 | [`scrum-master`](agents/scrum-master.md) | sonnet | 22 tools | Use when teams need facilitation, process optimization, velocity improvement, or agile ceremony management—especially for sprint planning, retrospectives, impediment… |
 | [`security-engineer`](agents/security-engineer.md) | opus | all | Senior Security Engineer responsible for protecting applications, infrastructure, data, and engineering practices through proactive security reviews and threat modeling. |
+| [`seo-specialist`](agents/seo-specialist.md) | sonnet | all | Senior SEO Specialist responsible for organic and AI-answer visibility — technical SEO, content pruning, structured data, readiness for AI search engines and off-site… |
 | [`software-architect`](agents/software-architect.md) | opus | all | Principal Software Architect responsible for technical direction, architecture governance, system design, and engineering quality across all projects. |
+| [`ui-designer`](agents/ui-designer.md) | opus | all | Senior UI Designer responsible for visual direction and design quality — colour systems, typography, layout, dashboards, motion and accessibility — so that interfaces… |
 
 Reading the table:
-- **Model**: `opus` / `sonnet` pins the agent to that model; `inherit` uses whatever the main session runs.
+- **Model**: `opus` / `sonnet` / `haiku` pins the agent to that model; `inherit` uses whatever the main session runs. `codebase-scout` also sets `effort: low`. The [`model-routing`](skills/model-routing/SKILL.md) skill explains how to choose and change these.
 - **Tools**: `all` means no restriction; `N tools` means the agent may only use the tools listed in its file.
 - `compliance-auditor`, `project-manager` and `scrum-master` use Atlassian (Jira / Confluence) MCP tools, so they need that MCP server connected.
+- `seo-specialist`, `growth-marketer` and `ui-designer` name the skills they use when installed (this repo's and some [third-party](#third-party-skills-and-plugins) ones); they work without them. `seo-specialist` needs search data: a connected Search Console tool or an export.
 
 ## Skills
 
@@ -87,12 +92,24 @@ A skill is a folder with a `SKILL.md` (instructions plus a one-line description 
 
 | Skill | What it does | Files |
 |---|---|---|
+| [`color-system`](skills/color-system/SKILL.md) | Turn a palette into a working UI colour system — give each colour one role, apply the 60/30/10 split, check WCAG contrast with the bundled script and store everything as… | 2 |
+| [`cross-model-review`](skills/cross-model-review/SKILL.md) | Get a second opinion from a different model before trusting high-risk work — one model plans or builds, a different one audits with fresh context, and they loop until… | 1 |
 | [`ios-app-store-release`](skills/ios-app-store-release/SKILL.md) | iOS release engineering — pre-upload checklist for TestFlight/App Store (icon alpha, export compliance keys, privacy manifest and required-reason APIs, entitlements vs… | 1 |
 | [`kotlin-engineering`](skills/kotlin-engineering/SKILL.md) | Kotlin engineering standards for production Android development — null safety, immutable state, sealed types, coroutines, structured concurrency, Flow/StateFlow, error… | 1 |
+| [`model-routing`](skills/model-routing/SKILL.md) | Pick the cheapest Claude model and effort level that can do each task well, and set it up in Claude Code (/model, /effort, subagent model and effort, opusplan, CLAUDE.md… | 1 |
+| [`pre-launch-compliance-check`](skills/pre-launch-compliance-check/SKILL.md) | Pre-launch legal, privacy and honest-design checklist for a web or mobile app, with GDPR points for products that hold personal data (consent, data rights, retention,… | 1 |
+| [`seo-content-pruning`](skills/seo-content-pruning/SKILL.md) | Prune and repair low-value pages to lift organic traffic — build a cut list from Search Console, protect pages that have backlinks, give every page one verdict (delete,… | 1 |
+| [`short-video-growth-system`](skills/short-video-growth-system/SKILL.md) | Plan a week of short videos that turn viewers into sign-ups without ads — one free tool as the hook, seven one-problem videos filmed in a single batch, a comment keyword… | 1 |
+| [`status-briefing`](skills/status-briefing/SKILL.md) | Report work as a short briefing instead of a long recap — a plan before changing anything, then what changed, what the user must do next, and a verified / not verified /… | 1 |
 | [`verify`](skills/verify/SKILL.md) | Run the project's own quality gates (lint, typecheck, tests, production build) before saying work is done, fixed or ready. Use before claiming completion, before… | 1 |
+| [`vet-third-party-skill`](skills/vet-third-party-skill/SKILL.md) | Check a third-party skill, plugin, MCP server or agent before installing it or adding it to third-party.tsv — find the original source, confirm licence and maintenance,… | 1 |
 
 Notes:
 - `verify` runs a project's own checks (lint, type check, tests, build) before work is called done.
+- `model-routing`, `status-briefing` and `cross-model-review` are about working with Claude itself: which model does what, how results are reported, and when a second model should audit the first.
+- `seo-content-pruning`, `short-video-growth-system` and `color-system` are marketing and design playbooks. `color-system` ships a small script, `scripts/contrast.py` (Python 3, no dependencies), that prints WCAG contrast ratios.
+- `pre-launch-compliance-check` is an engineering checklist, **not legal advice**; have a lawyer review real policies.
+- `vet-third-party-skill` is the review to run before installing anyone else's skill or adding a row to [`third-party.tsv`](third-party.tsv).
 - `ios-app-store-release` is a pre-upload checklist for TestFlight / App Store; `kotlin-engineering` covers Kotlin standards for production Android.
 
 ## Engineering standards
@@ -138,8 +155,8 @@ These change your Claude Code configuration, so the installer only touches them 
 
 ```
 collection-ai/
-├── agents/                 18 subagent definitions, one .md file each
-├── skills/                 3 skills, one folder each (entry point: SKILL.md)
+├── agents/                 22 subagent definitions, one .md file each
+├── skills/                 11 skills, one folder each (entry point: SKILL.md)
 ├── engineering/            10 engineering standards
 ├── hooks/ + hooks.json     secrets-protection hook (opt-in)
 ├── mcp.json                MCP servers (opt-in)
@@ -186,12 +203,34 @@ Skills are copied into `~/.claude/skills`; plugins are installed with the `claud
 | `security-pen-testing` | Use when the user asks to perform security audits, penetration testing, vulnerability scanning, OWASP Top 10 checks, or offensive security assessments. Covers static… | [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | `4a3c05b` | MIT |
 | `senior-frontend` | Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications. | [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | `4a3c05b` | MIT |
 | `ui-ux-pro-max` | UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across… | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `6ae86f6` | MIT |
+| `apple-design` | Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations,… | [emilkowalski/skills](https://github.com/emilkowalski/skills) | `715c180` | MIT |
+| `emil-design-eng` | This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great. | [emilkowalski/skills](https://github.com/emilkowalski/skills) | `715c180` | MIT |
+| `web-design-guidelines` | Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against… | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | `1a2c79d` | MIT |
+| `shadcn` | Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI, including chat interfaces. Provides project context, component… | [shadcn-ui/ui](https://github.com/shadcn-ui/ui) | `8ab2771` | MIT |
+| `unslop` | Turns vibecoded, AI-looking UI into a designed interface with its own character. Finds a direction from the product itself, then fixes spacing, color, icons, copy, type,… | [heydamir/unslop](https://github.com/heydamir/unslop) | `97daa3e` | CC-BY-4.0 |
+| `hallmark` | Design skill for websites and new pages that look designed, not generated. Use when the user asks to build or design something new, or names Hallmark. | [Nutlope/hallmark](https://github.com/Nutlope/hallmark) | `7e213cb` | MIT |
+| `stack-diagram` | Create cloud-architecture-style diagrams of tech stacks, system architectures, infra layouts, and service topologies — with real brand logos, grouped containers, and… | [caru-ini/stack-diagram](https://github.com/caru-ini/stack-diagram) | `5af3b09` | MIT |
+| `geo-optimizer` | Audit and fix a website for AI search visibility (Generative Engine Optimization). Use when asked to check whether a site or page can be found and cited by ChatGPT… | [Auriti-Labs/geo-optimizer-skill](https://github.com/Auriti-Labs/geo-optimizer-skill) | `16a99f9` | MIT |
+| `marketing-psychology` | When the user wants to apply psychology to marketing, or asks why buyers behave or value things as they do, or whether a persuasion tactic is honest: biases, mental… | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | `9d6d7ce` | MIT |
 
 | Plugin | What it does | Source | Licence |
 |---|---|---|---|
 | `agent-skills` | Production-grade engineering skills for the whole lifecycle: spec, plan, build, verify, review, ship (also adds 4 subagents). | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | MIT |
 | `andrej-karpathy-skills` | Behavioural guidelines that reduce common LLM coding mistakes. | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | not stated |
 | `claude-code-setup` | Analyses a codebase and recommends Claude Code automations (hooks, subagents, skills, MCP servers). | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | see repo |
+| `founder-skill` | Eleven skills that test a business idea before launch: a board, a competitor scout, a panel of simulated buyers, pricing, the offer, a CFO, marketing, brand, operations, a launch plan and the business plan. | [Jakeschincariol/founder-skill](https://github.com/Jakeschincariol/founder-skill) | MIT |
+| `seed-skill` | Eleven skills for raising a seed round: competitor scout, investor finder, business plan, pitch deck, outreach drafts (nothing sends without your yes), market size, financial model, pitch coach, term sheet reader, data room and investor updates. | [Jakeschincariol/seed-skill](https://github.com/Jakeschincariol/seed-skill) | MIT |
+
+Things to know before installing some of them:
+
+- **Style skills overlap.** `ui-ux-pro-max`, `unslop` and `hallmark` each pick or change a visual style. Use one per screen: `unslop` to clean up an existing screen, `hallmark` for a new page, `ui-ux-pro-max` to choose a style. Your own brand colours come first (see [`color-system`](skills/color-system/SKILL.md)).
+- **`unslop`** is licensed CC BY 4.0: keep the credit to Damir Sokolovsky and the link to the repository if you share or adapt it. It edits UI code, so run it on a branch. Its optional image generation and story video need Playwright, ffmpeg and an image tool, and it asks before any paid generation.
+- **`hallmark`** is large (about 190 files, 7 MB). Image generation is opt-in through a `TOGETHER_API_KEY`.
+- **`geo-optimizer`** is instructions for the `geo` command-line tool; install that first with `pipx install geo-optimizer-skill` (Python 3.10+). Preview with `geo fix` before using `--apply`.
+- **`shadcn`** is for projects that use shadcn/ui (a `components.json` file); it runs `npx shadcn@latest` commands.
+- **`web-design-guidelines`** fetches the current rule list from GitHub (`vercel-labs/web-interface-guidelines`) each time it runs, so the rules themselves are not pinned.
+- **`stack-diagram`** needs Python 3.9+ and network access to download logos (Playwright for PNG). It can offer to post a diagram to a **public** gallery: say no for anything that shows internal systems.
+- **`founder-skill` and `seed-skill`** are plugins, so they follow upstream and are not pinned. Their buyers and boards are simulated: treat results as a first pass, not as demand, and nothing in them is financial or legal advice. `seed-skill` reads public app-store reviews and investor filings over the network.
 
 Anthropic's built-in document skills (PDF, Word, Excel, PowerPoint and similar) are not included.
 
